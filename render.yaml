@@ -2,8 +2,11 @@ services:
   - type: web
     name: job-logger-api
     env: python
-    buildCommand: ""
-    startCommand: gunicorn app:app
-    plan: free
     region: oregon
+    plan: free
     rootDir: server
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: NEON_DB_URL
+        sync: false
