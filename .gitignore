@@ -1,0 +1,39 @@
+# === Python / Flask ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+.env
+.venv/
+env/
+venv/
+build/
+dist/
+
+# === macOS ===
+.DS_Store
+
+# === Chrome Extension ===
+*.crx
+*.pem
+
+# === Node (if any future JS toolchain is added) ===
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# === VSCode / IDEs ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# === OS Temp Files ===
+Thumbs.db
+desktop.ini
+
+# === Render Deployment (Optional) ===
+# Uncomment if you use secrets in this folder
+# render.yaml
