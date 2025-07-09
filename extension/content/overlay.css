@@ -1,0 +1,844 @@
+/* Responsive Premium Semi-Transparent Floating Widget */
+.job-logger-widget {
+    position: fixed !important;
+    top: 50%;
+    right: 0px !important;
+    transform: translateY(-50%);
+    z-index: 999999 !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: clamp(12px, 2.5vw, 14px) !important;
+    /* Responsive font size */
+
+    /* Reset any inherited styles */
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* When dragging, disable transitions and transforms */
+.job-logger-widget.dragging {
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Default positioning class */
+.job-logger-widget.centered {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+/* Responsive Widget Trigger */
+.widget-trigger {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    /* Responsive sizing */
+    width: clamp(40px, 8vw, 56px) !important;
+    height: clamp(40px, 8vw, 56px) !important;
+    border-radius: calc(clamp(40px, 8vw, 56px) / 2) 0 0 calc(clamp(40px, 8vw, 56px) / 2) !important;
+
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(0, 86, 179, 0.9)) !important;
+    backdrop-filter: blur(clamp(15px, 3vw, 20px)) !important;
+    -webkit-backdrop-filter: blur(clamp(15px, 3vw, 20px)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    cursor: pointer !important;
+    box-shadow:
+        -4px 0 20px rgba(0, 123, 255, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    user-select: none !important;
+    touch-action: none !important;
+}
+
+.widget-trigger:hover {
+    transform: translateY(-50%) translateX(-4px) scale(1.05) !important;
+    background: linear-gradient(135deg, rgba(0, 123, 255, 1), rgba(0, 86, 179, 1)) !important;
+    box-shadow:
+        -6px 0 25px rgba(0, 123, 255, 0.4),
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.widget-trigger:active {
+    transform: translateY(-50%) translateX(-2px) scale(0.98) !important;
+}
+
+.widget-trigger.dragging {
+    cursor: grabbing !important;
+    transform: translateY(-50%) scale(0.95) !important;
+    box-shadow:
+        -6px 0 25px rgba(0, 123, 255, 0.5),
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.widget-trigger .widget-icon {
+    font-size: clamp(16px, 4vw, 22px) !important;
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    pointer-events: none !important;
+}
+
+/* Responsive Widget Panel */
+.widget-panel {
+    position: absolute !important;
+    right: clamp(40px, 8vw, 56px) !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    /* Responsive width */
+    width: clamp(280px, 35vw, 360px) !important;
+    min-width: 280px !important;
+    max-width: min(90vw, 400px) !important;
+
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(clamp(20px, 4vw, 30px)) !important;
+    -webkit-backdrop-filter: blur(clamp(20px, 4vw, 30px)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: clamp(12px, 2vw, 16px) 0 0 clamp(12px, 2vw, 16px) !important;
+    box-shadow:
+        -8px 0 32px rgba(0, 0, 0, 0.1),
+        0 16px 64px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-50%) translateX(30px) scale(0.95) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Widget states with premium animations */
+.job-logger-widget.collapsed .widget-panel {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-50%) translateX(30px) scale(0.95) !important;
+}
+
+.job-logger-widget.expanded .widget-panel {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(-50%) translateX(0) scale(1) !important;
+}
+
+/* Responsive Widget Header */
+.widget-header {
+    padding: clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px) clamp(12px, 2.5vw, 16px) clamp(20px, 4vw, 24px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.05)) !important;
+    border-radius: clamp(12px, 2vw, 16px) 0 0 0 !important;
+    position: relative !important;
+}
+
+.widget-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent) !important;
+    border-radius: clamp(12px, 2vw, 16px) 0 0 0 !important;
+    pointer-events: none !important;
+}
+
+.widget-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(8px, 1.5vw, 10px) !important;
+    color: rgba(0, 123, 255, 0.9) !important;
+    font-weight: 600 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.widget-icon-large {
+    font-size: clamp(16px, 3vw, 20px) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 123, 255, 0.3)) !important;
+}
+
+.widget-text {
+    font-size: clamp(14px, 2.5vw, 16px) !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* Responsive Widget Content */
+.widget-content {
+    padding: clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px) clamp(20px, 4vw, 24px) clamp(20px, 4vw, 24px) !important;
+    position: relative !important;
+}
+
+.widget-info {
+    margin-bottom: clamp(16px, 3vw, 20px) !important;
+    padding: clamp(12px, 2.5vw, 16px) !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: clamp(8px, 1.5vw, 12px) !important;
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+.current-domain {
+    font-size: clamp(12px, 2vw, 14px) !important;
+    color: rgba(51, 51, 51, 0.8) !important;
+    margin-bottom: clamp(6px, 1vw, 8px) !important;
+    font-weight: 500 !important;
+}
+
+.site-status {
+    font-size: clamp(11px, 2vw, 13px) !important;
+}
+
+.status-safe {
+    color: rgba(40, 167, 69, 0.9) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(40, 167, 69, 0.2) !important;
+}
+
+.status-warning {
+    color: rgba(220, 53, 69, 0.9) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(220, 53, 69, 0.2) !important;
+}
+
+/* Responsive Widget Buttons */
+.widget-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(8px, 2vw, 12px) !important;
+}
+
+.btn-extract,
+.btn-manual,
+.btn-manual-only {
+    width: 100% !important;
+    padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 16px) !important;
+    border: none !important;
+    border-radius: clamp(8px, 1.5vw, 12px) !important;
+    font-size: clamp(12px, 2vw, 14px) !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(6px, 1vw, 8px) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    letter-spacing: -0.01em !important;
+}
+
+.btn-extract {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(0, 86, 179, 0.9)) !important;
+    color: white !important;
+    box-shadow:
+        0 8px 24px rgba(0, 123, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.btn-extract:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 1), rgba(0, 86, 179, 1)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow:
+        0 12px 32px rgba(0, 123, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.btn-extract:disabled {
+    background: linear-gradient(135deg, rgba(108, 117, 125, 0.7), rgba(90, 98, 104, 0.7)) !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn-manual {
+    background: linear-gradient(135deg, rgba(108, 117, 125, 0.9), rgba(90, 98, 104, 0.9)) !important;
+    color: white !important;
+    box-shadow:
+        0 8px 24px rgba(108, 117, 125, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.btn-manual:hover {
+    background: linear-gradient(135deg, rgba(90, 98, 104, 1), rgba(73, 80, 87, 1)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow:
+        0 12px 32px rgba(108, 117, 125, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.btn-manual-only {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(224, 168, 0, 0.9)) !important;
+    color: rgba(33, 37, 41, 0.9) !important;
+    box-shadow:
+        0 8px 24px rgba(255, 193, 7, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-manual-only:hover {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 1), rgba(224, 168, 0, 1)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow:
+        0 12px 32px rgba(255, 193, 7, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+.restriction-warning {
+    margin-top: clamp(8px, 2vw, 12px) !important;
+    padding: clamp(8px, 2vw, 12px) !important;
+    background: rgba(255, 243, 205, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 234, 167, 0.6) !important;
+    border-radius: clamp(6px, 1vw, 8px) !important;
+    box-shadow:
+        0 4px 16px rgba(255, 193, 7, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+.restriction-warning small {
+    color: rgba(133, 100, 4, 0.9) !important;
+    font-size: clamp(10px, 1.8vw, 12px) !important;
+    line-height: 1.4 !important;
+    font-weight: 500 !important;
+}
+
+/* Flexible Draggable and Resizable Side Modal - FIXED POSITIONING */
+.job-logger-side-modal {
+    position: fixed !important;
+    top: 80px;
+    /* Remove !important to allow JS changes */
+    left: 20px;
+    /* Remove !important to allow JS changes */
+    width: 400px;
+    /* Remove !important to allow JS changes */
+    height: 600px;
+    /* Remove !important to allow JS changes */
+    min-width: 320px !important;
+    min-height: 400px !important;
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    z-index: 1000000 !important;
+
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(clamp(20px, 4vw, 30px)) !important;
+    -webkit-backdrop-filter: blur(clamp(20px, 4vw, 30px)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: clamp(12px, 2vw, 16px) !important;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: clamp(12px, 2vw, 14px) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    resize: none !important;
+    /* Disable browser resize, we'll handle it manually */
+
+    animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* When dragging or resizing, disable transitions */
+.job-logger-side-modal.dragging,
+.job-logger-side-modal.resizing {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Default positioning class */
+.job-logger-side-modal.default-position {
+    top: 80px !important;
+    left: 20px !important;
+    width: 400px !important;
+    height: 600px !important;
+}
+
+/* Draggable Modal Header */
+.side-modal-header {
+    padding: clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px) clamp(12px, 2vw, 16px) clamp(20px, 4vw, 24px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.08), rgba(0, 86, 179, 0.05)) !important;
+    border-radius: clamp(12px, 2vw, 16px) clamp(12px, 2vw, 16px) 0 0 !important;
+    position: relative !important;
+    cursor: move !important;
+    /* Indicates draggable */
+    user-select: none !important;
+}
+
+.side-modal-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent) !important;
+    border-radius: clamp(12px, 2vw, 16px) clamp(12px, 2vw, 16px) 0 0 !important;
+    pointer-events: none !important;
+}
+
+.side-modal-header h3 {
+    margin: 0 !important;
+    font-size: clamp(14px, 3vw, 18px) !important;
+    font-weight: 600 !important;
+    color: rgba(0, 123, 255, 0.9) !important;
+    position: relative !important;
+    z-index: 1 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.close-btn {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    font-size: clamp(14px, 3vw, 18px) !important;
+    cursor: pointer !important;
+    color: rgba(102, 102, 102, 0.8) !important;
+    padding: clamp(6px, 1vw, 8px) !important;
+    width: clamp(28px, 5vw, 32px) !important;
+    height: clamp(28px, 5vw, 32px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: clamp(6px, 1vw, 8px) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.close-btn:hover {
+    background: rgba(233, 236, 239, 0.9) !important;
+    color: rgba(51, 51, 51, 0.9) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.side-modal-content {
+    padding: clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px) !important;
+    overflow-y: auto !important;
+    flex: 1 !important;
+}
+
+.field-group {
+    margin-bottom: clamp(16px, 3vw, 20px) !important;
+}
+
+.field-group label {
+    display: block !important;
+    margin-bottom: clamp(6px, 1vw, 8px) !important;
+    font-size: clamp(12px, 2vw, 14px) !important;
+    font-weight: 600 !important;
+    color: rgba(85, 85, 85, 0.9) !important;
+    letter-spacing: -0.01em !important;
+}
+
+.required {
+    color: rgba(220, 53, 69, 0.9) !important;
+}
+
+.field-group input,
+.field-group textarea {
+    width: 100% !important;
+    padding: clamp(10px, 2vw, 12px) clamp(12px, 2vw, 14px) !important;
+    border: 2px solid rgba(233, 236, 239, 0.8) !important;
+    border-radius: clamp(6px, 1vw, 8px) !important;
+    font-size: clamp(12px, 2vw, 14px) !important;
+    font-family: inherit !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-sizing: border-box !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+    outline: none !important;
+    border-color: rgba(0, 123, 255, 0.8) !important;
+    box-shadow:
+        0 0 0 4px rgba(0, 123, 255, 0.1),
+        0 4px 16px rgba(0, 123, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    transform: translateY(-1px) !important;
+}
+
+.field-group input.error,
+.field-group textarea.error {
+    border: 1px solid #e74c3c !important;
+    background-color: #fff6f6;
+}
+
+.field-group small.error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 2px;
+    display: block;
+}
+
+
+.field-group textarea {
+    height: clamp(80px, 15vh, 120px) !important;
+    resize: vertical !important;
+}
+
+.field-group small {
+    display: block !important;
+    margin-top: clamp(4px, 1vw, 6px) !important;
+    font-size: clamp(10px, 1.8vw, 12px) !important;
+    color: rgba(102, 102, 102, 0.8) !important;
+    font-weight: 500 !important;
+}
+
+.side-modal-footer {
+    padding: clamp(12px, 2vw, 16px) clamp(20px, 4vw, 24px) clamp(16px, 3vw, 20px) clamp(20px, 4vw, 24px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    display: flex !important;
+    gap: clamp(8px, 2vw, 12px) !important;
+    justify-content: flex-end !important;
+    background: linear-gradient(135deg, rgba(248, 249, 250, 0.8), rgba(248, 249, 250, 0.6)) !important;
+    border-radius: 0 0 clamp(12px, 2vw, 16px) clamp(12px, 2vw, 16px) !important;
+    flex-wrap: wrap !important;
+}
+
+.side-modal-footer button {
+    padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 20px) !important;
+    border-radius: clamp(6px, 1vw, 8px) !important;
+    font-size: clamp(12px, 2vw, 14px) !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    letter-spacing: -0.01em !important;
+    min-width: clamp(80px, 15vw, 100px) !important;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(102, 102, 102, 0.9) !important;
+    border-color: rgba(222, 226, 230, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.btn-cancel:hover {
+    background: rgba(248, 249, 250, 0.95) !important;
+    color: rgba(51, 51, 51, 0.9) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(0, 86, 179, 0.9)) !important;
+    color: white !important;
+    box-shadow:
+        0 8px 24px rgba(0, 123, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 1), rgba(0, 86, 179, 1)) !important;
+    transform: translateY(-2px) !important;
+    box-shadow:
+        0 12px 32px rgba(0, 123, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Resize handle for modal */
+.job-logger-side-modal::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: linear-gradient(-45deg, transparent 0%, transparent 30%, rgba(0, 123, 255, 0.3) 30%, rgba(0, 123, 255, 0.3) 70%, transparent 70%) !important;
+    cursor: se-resize !important;
+    border-radius: 0 0 clamp(12px, 2vw, 16px) 0 !important;
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+    .job-logger-widget {
+        top: 40% !important;
+    }
+
+    .widget-panel {
+        width: min(90vw, 300px) !important;
+        right: clamp(35px, 7vw, 45px) !important;
+    }
+
+    .job-logger-side-modal {
+        top: 20px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        height: calc(100vh - 40px) !important;
+        max-height: none !important;
+    }
+
+    .side-modal-footer {
+        flex-direction: column !important;
+    }
+
+    .side-modal-footer button {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .widget-trigger {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 20px 0 0 20px !important;
+    }
+
+    .widget-trigger .widget-icon {
+        font-size: 16px !important;
+    }
+
+    .widget-panel {
+        width: calc(100vw - 50px) !important;
+        right: 40px !important;
+    }
+}
+
+/* Tablet specific styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .job-logger-side-modal {
+        width: min(450px, 70vw) !important;
+        height: min(650px, 80vh) !important;
+    }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1920px) {
+    .widget-panel {
+        width: 380px !important;
+    }
+
+    .job-logger-side-modal {
+        width: 480px !important;
+        height: 700px !important;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2) {
+
+    .widget-trigger,
+    .widget-panel,
+    .job-logger-side-modal {
+        backdrop-filter: blur(40px) !important;
+        -webkit-backdrop-filter: blur(40px) !important;
+    }
+}
+
+/* Ensure premium effects work on all browsers */
+@supports not (backdrop-filter: blur(20px)) {
+
+    .widget-trigger,
+    .widget-panel,
+    .job-logger-side-modal {
+        background: rgba(255, 255, 255, 0.98) !important;
+    }
+
+    .widget-trigger {
+        background: linear-gradient(135deg, rgb(0, 123, 255), rgb(0, 86, 179)) !important;
+    }
+}
+
+/* Enhanced Extraction Styles */
+.extraction-status {
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin-top: 2px !important;
+}
+
+/* Enhanced Modal Styles */
+.job-logger-side-modal.enhanced {
+    background: rgba(255, 255, 255, 0.97) !important;
+}
+
+.extraction-info {
+    margin-bottom: 20px !important;
+    padding: 12px !important;
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.05)) !important;
+    border: 1px solid rgba(0, 123, 255, 0.2) !important;
+    border-radius: 8px !important;
+}
+
+.extraction-stats {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    font-size: 12px !important;
+}
+
+.extraction-stats .stat {
+    color: rgba(51, 51, 51, 0.8) !important;
+}
+
+.quality-indicator {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid transparent !important;
+}
+
+.quality-excellent {
+    color: #155724 !important;
+    background: rgba(212, 237, 218, 0.9) !important;
+    border-color: #c3e6cb !important;
+}
+
+.quality-very-good {
+    color: #0c5460 !important;
+    background: rgba(209, 236, 241, 0.9) !important;
+    border-color: #bee5eb !important;
+}
+
+.quality-good {
+    color: #004085 !important;
+    background: rgba(204, 229, 255, 0.9) !important;
+    border-color: #b8daff !important;
+}
+
+.quality-fair {
+    color: #856404 !important;
+    background: rgba(255, 243, 205, 0.9) !important;
+    border-color: #ffeaa7 !important;
+}
+
+.quality-poor {
+    color: #721c24 !important;
+    background: rgba(248, 215, 218, 0.9) !important;
+    border-color: #f1b0b7 !important;
+}
+
+.quality-failed {
+    color: #721c24 !important;
+    background: rgba(248, 215, 218, 0.9) !important;
+    border-color: #f1b0b7 !important;
+}
+
+/* Enhanced field highlighting based on quality */
+.job-logger-side-modal.enhanced .field-group input:focus,
+.job-logger-side-modal.enhanced .field-group textarea:focus {
+    border-color: rgba(0, 123, 255, 0.8) !important;
+    box-shadow:
+        0 0 0 4px rgba(0, 123, 255, 0.1),
+        0 4px 16px rgba(0, 123, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+}
+
+/* Enhanced responsive adjustments */
+@media (max-width: 768px) {
+    .extraction-stats {
+        grid-template-columns: 1fr !important;
+    }
+
+    .quality-indicator {
+        font-size: 10px !important;
+    }
+}
+
+.modal-feedback-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    border-radius: 12px;
+}
+
+.feedback-content {
+    text-align: center;
+    font-size: 1.5rem;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.feedback-icon {
+    font-size: 2.5rem;
+    display: none;
+    margin-bottom: 10px;
+}
+
+.feedback-icon.success {
+    color: #28a745;
+}
+
+.feedback-icon.error {
+    color: #dc3545;
+}
+
+.feedback-message {
+    font-weight: 500;
+    margin-top: 5px;
+    color: #333;
+}
+
+/* Sleek Spinner */
+.spinner {
+    border: 4px solid #ccc;
+    border-top: 4px solid #555;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    animation: spin 0.8s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
