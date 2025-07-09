@@ -21,7 +21,7 @@ def get_db_connection():
 
 # Configuration
 DATABASE_PATH = 'job_logger.db'
-PORT = 5001  # Using 5001 for Mac compatibility
+PORT = int(os.environ.get('PORT', 5001))  # Using 5001 for Mac compatibility
 
 # Basic route to test server
 @app.route('/')
@@ -38,7 +38,7 @@ def home():
 def health_check():
     return jsonify({
         "status": "healthy",
-        "database": "connected" if os.path.exists(DATABASE_PATH) else "not_found",
+        "database": "connected",
         "timestamp": datetime.now().isoformat(),
         "version": "1.0",
         "domains_loaded": len(get_active_domains())
@@ -59,34 +59,6 @@ def get_domains():
             }
             for domain in domains
         ]
-    })
-
-# Test domain suggestion
-@app.route('/api/test_domain_suggestion')
-def test_domain_suggestion():
-    # Test cases
-    test_cases = [
-        {"title": "Senior React Developer", "expected": "web_development"},
-        {"title": "DevOps Engineer", "expected": "devops"},
-        {"title": "Data Scientist", "expected": "data_science"},
-        {"title": "Product Manager", "expected": "product_management"},
-        {"title": "Cybersecurity Analyst", "expected": "cybersecurity"}
-    ]
-    
-    results = []
-    for test in test_cases:
-        suggested = suggest_domain_from_text(test["title"])
-        results.append({
-            "job_title": test["title"],
-            "suggested_domain": suggested,
-            "expected_domain": test["expected"],
-            "match": suggested == test["expected"]
-        })
-    
-    return jsonify({
-        "status": "success",
-        "test_results": results,
-        "accuracy": sum(1 for r in results if r["match"]) / len(results) * 100
     })
 
 @app.route('/api/log_job', methods=['POST'])
@@ -146,12 +118,7 @@ def log_job():
 
 
 if __name__ == '__main__':
+    PORT = int(os.environ.get('PORT', 5001))
     print("🚀 Starting Job Logger Server...")
     print(f"📍 Server will run on: http://localhost:{PORT}")
-    print(f"🏷️ Loaded {len(get_active_domains())} active domains")
-    print("📊 Health check: http://localhost:5001/api/health")
-    print("🏷️ View domains: http://localhost:5001/api/domains")
-    print("🧪 Test suggestions: http://localhost:5001/api/test_domain_suggestion")
-    print("❌ To stop server: Press Ctrl+C")
-    
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    app.run(host='0.0.0.0', port=PORT)
