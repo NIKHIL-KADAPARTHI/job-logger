@@ -84,7 +84,7 @@ def log_job():
         cur.execute(count_query, (user_id, today_utc))
         current_count = cur.fetchone()['count']
 
-        if current_count >= 2:
+        if current_count >= 60:
             cur.close()
             conn.close()
             return jsonify({
