@@ -6,3 +6,4 @@ psycopg2-binary
 flask-cors
 python-dotenv
 gunicorn
+jinja2

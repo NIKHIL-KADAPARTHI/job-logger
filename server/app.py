@@ -8,12 +8,15 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 from flask_cors import CORS
+from admin.auth import auth_bp
 
 # Create Flask app
 app = Flask(__name__)
 CORS(app)
 load_dotenv()
 NEON_DB_URL = os.getenv("NEON_DB_URL")
+app.register_blueprint(auth_bp)
+app.secret_key = os.getenv("SECRET_KEY")
 
 def get_db_connection():
     return psycopg2.connect(NEON_DB_URL, cursor_factory=RealDictCursor)
