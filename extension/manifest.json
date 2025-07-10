@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Multi-User Job Logger - Debug Version",
+  "name": "Multi-User Job Logger",
   "version": "2.1.0",
   "description": "Advanced job logging with debug extractors for precise development",
   "permissions": [
