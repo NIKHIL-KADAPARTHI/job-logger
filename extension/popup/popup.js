@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load saved settings
     await loadSavedSettings();
 
+    // Fetch today's job count
+    await fetchTodayJobCount();
+
     // Setup event listeners
     setupEventListeners();
 });
@@ -181,3 +184,28 @@ async function notifyContentScripts() {
         console.error('❌ Failed to notify content scripts:', error);
     }
 }
+
+async function fetchTodayJobCount() {
+    try {
+        const result = await chrome.storage.local.get(['userId']);
+        const userId = result.userId;
+        if (!userId) return;
+
+        const todayUTC = new Date().toISOString().split('T')[0]; // e.g., "2025-07-09"
+        const url = `${SERVER_URL}/api/user_job_count?user_id=${userId}&date=${todayUTC}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            jobsCount.textContent = `${data.count} jobs logged today`;
+            console.log(`📊 Logged today: ${data.count}`);
+        } else {
+            jobsCount.textContent = 'Unable to fetch job count';
+        }
+    } catch (error) {
+        console.error('❌ Error fetching job count:', error);
+        jobsCount.textContent = 'Error fetching count';
+    }
+}
+

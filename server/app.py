@@ -63,35 +63,59 @@ def get_domains():
 def log_job():
     try:
         data = request.get_json()
-        job_title = data['job_title'].strip()
-        company_name = data['company_name'].strip()
-        job_url = data['job_url'].strip()
         required_fields = ['user_id', 'company_name', 'job_title', 'location', 'job_description', 'job_url', 'domain', 'timestamp']
         if not all(field in data for field in required_fields):
             return jsonify({"status": "error", "message": "Missing required fields"}), 400
 
+        user_id = data['user_id']
+        job_title = data['job_title'].strip()
+        company_name = data['company_name'].strip()
+        job_url = data['job_url'].strip()
+
         conn = get_db_connection()
         cur = conn.cursor()
-        # Check for duplicate job within past 7 days
+
+        # 1️⃣ Check today's job count for the user
+        today_utc = datetime.utcnow().date().isoformat()
+        count_query = """
+            SELECT COUNT(*) FROM jobs
+            WHERE user_id = %s AND DATE(timestamp AT TIME ZONE 'UTC') = %s;
+        """
+        cur.execute(count_query, (user_id, today_utc))
+        current_count = cur.fetchone()['count']
+
+        if current_count >= 2:
+            cur.close()
+            conn.close()
+            return jsonify({
+                "status": "limit_reached",
+                "message": "You have reached the daily limit of 60 job logs."
+            }), 403
+
+        # 2️⃣ Check for duplicate job within past 7 days
         check_query = """
             SELECT id FROM jobs
             WHERE job_title = %s AND company_name = %s AND job_url = %s
             AND timestamp >= NOW() - INTERVAL '7 days'
             LIMIT 1;
-            """
+        """
         cur.execute(check_query, (job_title, company_name, job_url))
         duplicate = cur.fetchone()
 
         if duplicate:
+            cur.close()
+            conn.close()
             return jsonify({
                 "status": "duplicate",
                 "duplicate_job_id": duplicate["id"],
                 "message": "Duplicate job entry detected"
             }), 200
+
+        # 3️⃣ Proceed with insert
         insert_query = """
-        INSERT INTO jobs (user_id, company_name, job_title, location, job_description, job_url, domain, timestamp)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        RETURNING id;
+            INSERT INTO jobs (user_id, company_name, job_title, location, job_description, job_url, domain, timestamp)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING id;
         """
         cur.execute(insert_query, (
             data['user_id'],
@@ -114,6 +138,29 @@ def log_job():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+@app.route('/api/user_job_count')
+def get_user_job_count():
+    user_id = request.args.get('user_id')
+    date = request.args.get('date')  # Expecting UTC YYYY-MM-DD
+
+    if not user_id or not date:
+        return jsonify({"status": "error", "message": "Missing user_id or date"}), 400
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        query = """
+            SELECT COUNT(*) FROM jobs
+            WHERE user_id = %s AND DATE(timestamp AT TIME ZONE 'UTC') = %s;
+        """
+        cur.execute(query, (user_id, date))
+        count = cur.fetchone()['count']
+        cur.close()
+        conn.close()
+
+        return jsonify({"status": "success", "count": count})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 5001))

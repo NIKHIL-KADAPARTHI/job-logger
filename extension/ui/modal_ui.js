@@ -126,6 +126,11 @@ async function submitJobData(modal) {
             toggleModalFeedback('duplicate', 'This job is already logged in the last 7 days');
             return;
         }
+        if (result.status === 'limit_reached') {
+            toggleModalFeedback('error', result.message || 'You reached your daily logging limit.');
+            return;
+        }
+
         if (!res.ok) throw new Error(result.message || 'Logging failed');
 
 
