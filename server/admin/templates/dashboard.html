@@ -13,7 +13,12 @@
         <p>Welcome, Admin!</p>
         <a href="{{ url_for('auth.logout') }}">Logout</a>
         <hr />
-        <p>✅ This is a placeholder. Stats and downloads will be added soon.</p>
+        <h3>📥 Download Previous Days:</h3>
+        <ul>
+            {% for date in past_dates %}
+            <li>{{ date }}: <a href="{{ url_for('auth.download_zip', date_str=date) }}">📦 Download ZIP</a></li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 
