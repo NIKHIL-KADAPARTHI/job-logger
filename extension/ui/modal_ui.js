@@ -115,7 +115,7 @@ async function submitJobData(modal) {
     try {
         toggleModalFeedback('loading');
 
-        const res = await fetch('http://localhost:5001/api/log_job', {
+        const res = await fetch('https://job-logger-api.onrender.com/api/log_job', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(jobData)
