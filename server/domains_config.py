@@ -137,7 +137,7 @@ DOMAINS = [
         "active": True
     },
     {
-        "id": "operations",
+        "id": "supplychain",
         "display_name": "Operations & Supply Chain",
         "keywords": ["operations", "supply chain", "logistics", "procurement"],
         "active": True
