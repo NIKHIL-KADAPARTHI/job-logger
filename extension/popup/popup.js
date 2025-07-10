@@ -1,6 +1,6 @@
 // popup.js - Extension Popup Logic
 
-const SERVER_URL = 'http://localhost:5001';
+const SERVER_URL = 'https://job-logger-api.onrender.com';
 
 // DOM elements
 const connectionStatus = document.getElementById('connection-status');
