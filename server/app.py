@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, send_file
-import sqlite3
 import os
 from datetime import datetime
 import hashlib
@@ -20,7 +19,6 @@ def get_db_connection():
     return psycopg2.connect(NEON_DB_URL, cursor_factory=RealDictCursor)
 
 # Configuration
-DATABASE_PATH = 'job_logger.db'
 PORT = int(os.environ.get('PORT', 5001))  # Using 5001 for Mac compatibility
 
 # Basic route to test server
