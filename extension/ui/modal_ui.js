@@ -123,7 +123,7 @@ async function submitJobData(modal) {
 
         const result = await res.json();
         if (result.status === 'duplicate') {
-            toggleModalFeedback('duplicate', 'This job is already logged in the last 7 days');
+            toggleModalFeedback('duplicate', 'Logged this bad boy already. On to the next.');
             return;
         }
         if (result.status === 'limit_reached') {
@@ -135,7 +135,7 @@ async function submitJobData(modal) {
 
 
         console.log('✅ Logged:', result);
-        toggleModalFeedback('success', 'Job logged successfully!');
+        toggleModalFeedback('success', 'Boom! Job locked & loaded. Next mission?');
     } catch (err) {
         console.error('❌ Logging error:', err);
         toggleModalFeedback('error', 'Failed to log job.');

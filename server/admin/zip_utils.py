@@ -112,19 +112,6 @@ def generate_zip_for_date(date_str):
                 summary_lines.append(f"{domain.capitalize()}: {len(domain_jobs)} jobs")
                 total_jobs += len(domain_jobs)
 
-            summary = f"""
-Job Logger Summary - {date_str}
-===============================
-
-Total Jobs: {total_jobs}
-Domains: {len(domain_groups)}
-
-Domain Breakdown:
-------------------
-""" + "\n".join(summary_lines)
-
-            zipf.writestr("summary.txt", summary)
-
         # Save ZIP file to disk
         with open(zip_path, "wb") as f:
             f.write(buffer.getvalue())

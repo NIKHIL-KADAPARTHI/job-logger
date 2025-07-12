@@ -53,3 +53,50 @@ button:hover {
     font-size: 0.9em;
     text-align: center;
 }
+
+.today-stats-box {
+    background-color: #f5f9ff;
+    border: 1px solid #d4e3fc;
+    padding: 16px;
+    margin: 10px 0 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.4s ease;
+}
+
+/* Admin Dashboard Header Styling */
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2b2d42;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-left {
+    font-size: 1rem;
+}
+
+.header-center {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.header-right {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.header-right:hover {
+    background-color: #0056b3;
+}

@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_file
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_file, jsonify
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
-from .zip_utils import generate_zip_for_date, get_past_utc_dates
+from .zip_utils import generate_zip_for_date, get_past_utc_dates, get_db_connection
 
 # ✅ Load .env variables
 load_dotenv()
@@ -72,3 +72,45 @@ def download_zip(date_str):
 def logout():
     session.clear()
     return redirect(url_for('auth.admin_login'))  # 🔁 FIXED: correct login redirect
+
+# ✅ Summary 
+@auth_bp.route('/admin/summary/<date_str>')
+def get_summary_json(date_str):
+    if not session.get("logged_in"):
+        return jsonify({"status": "unauthorized"}), 401
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        query = """
+        SELECT domain, COUNT(*) as count
+        FROM jobs
+        WHERE DATE(timestamp AT TIME ZONE 'UTC') = %s
+        GROUP BY domain;
+        """
+        cur.execute(query, (date_str,))
+        rows = cur.fetchall()
+
+        total_jobs = sum(row['count'] for row in rows)
+        breakdown = {row['domain']: row['count'] for row in rows}
+
+        cur.execute("""
+        SELECT COUNT(DISTINCT user_id) FROM jobs
+        WHERE DATE(timestamp AT TIME ZONE 'UTC') = %s
+        """, (date_str,))
+        users = cur.fetchone()['count']
+
+        cur.close()
+        conn.close()
+
+        return jsonify({
+            "status": "success",
+            "date": date_str,
+            "total_jobs": total_jobs,
+            "active_users": users,
+            "domain_breakdown": breakdown
+        })
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})

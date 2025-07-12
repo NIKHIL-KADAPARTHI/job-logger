@@ -87,12 +87,12 @@ def log_job():
         cur.execute(count_query, (user_id, today_utc))
         current_count = cur.fetchone()['count']
 
-        if current_count >= 60:
+        if current_count >= 50:
             cur.close()
             conn.close()
             return jsonify({
                 "status": "limit_reached",
-                "message": "You have reached the daily limit of 60 job logs."
+                "message": "You have reached the daily limit of 50 job logs."
             }), 403
 
         # 2️⃣ Check for duplicate job within past 7 days

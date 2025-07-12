@@ -5,21 +5,201 @@
     <meta charset="UTF-8" />
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('auth.static', filename='styles.css') }}">
+    <style>
+        /* 📌 Header Styling */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2b2d42;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            font-size: 1rem;
+        }
+
+        .header-center {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white
+        }
+
+        .header-right {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .header-right:hover {
+            background-color: #0056b3;
+        }
+
+        /* 📊 Stats + Modal Styling */
+        .stats-box {
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            transition: 0.3s ease;
+        }
+
+        .stats-box:hover {
+            background: #eef6ff;
+            transform: translateY(-2px);
+        }
+
+        .date-link {
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <!-- ✅ Header Section -->
+    <div class="header-bar">
+        <span class="header-left">👋 Welcome, Admin</span>
+        <h2 class="header-center">Admin Dashboard</h2>
+        <a class="header-right" href="{{ url_for('auth.logout') }}">Logout</a>
+    </div>
+
     <div class="dashboard-container">
-        <h1>📊 Job Logger Admin Dashboard</h1>
-        <p>Welcome, Admin!</p>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-        <hr />
-        <h3>📥 Download Previous Days:</h3>
+        <div id="stats-container" class="stats-box">
+            <h3>📈 Today's Statistics ({{ today }})</h3>
+            <p>🔄 Loading stats...</p>
+        </div>
+
+        <h3>📅 Previous Days:</h3>
         <ul>
             {% for date in past_dates %}
-            <li>{{ date }}: <a href="{{ url_for('auth.download_zip', date_str=date) }}">📦 Download ZIP</a></li>
+            <li class="date-link" onclick="showSummaryModal('{{ date }}')">{{ date }}</li>
             {% endfor %}
         </ul>
     </div>
+
+    <div id="summary-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modal-title">Summary</h3>
+            <div id="modal-body">Loading...</div>
+            <br />
+            <button onclick="downloadZip()">📦 Download ZIP</button>
+            <button onclick="closeModal()">❌ Close</button>
+        </div>
+    </div>
+
+    <script>
+        const SERVER_URL = window.location.origin;
+
+        async function fetchTodayStats() {
+            const today = "{{ today }}";
+            const res = await fetch(`${SERVER_URL}/admin/summary/${today}`);
+            const data = await res.json();
+            if (data.status === 'success') {
+                const container = document.getElementById('stats-container');
+                container.innerHTML = `
+          <h3>📈 Today's Statistics (${data.date})</h3>
+          <p>🧾 Total Jobs: <strong>${data.total_jobs}</strong></p>
+          <p>👥 Active Users: <strong>${data.active_users}</strong></p>
+          <h4>🏷️ Domain Breakdown:</h4>
+          <ul>
+            ${Object.entries(data.domain_breakdown)
+                        .map(([domain, count]) => `<li>${domain}: ${count} jobs</li>`)
+                        .join('')}
+          </ul>
+        `;
+            }
+        }
+
+        fetchTodayStats();
+
+        let currentDate = null;
+
+        async function showSummaryModal(dateStr) {
+            currentDate = dateStr;
+            document.getElementById("modal-title").innerText = `📅 Summary - ${dateStr}`;
+            document.getElementById("modal-body").innerHTML = "Loading...";
+            document.getElementById("summary-modal").style.display = "flex";
+
+            try {
+                const res = await fetch(`${SERVER_URL}/admin/summary/${dateStr}`);
+                const data = await res.json();
+                if (data.status === 'success') {
+                    document.getElementById("modal-body").innerHTML = `
+            <p>🧾 Total Jobs: <strong>${data.total_jobs}</strong></p>
+            <p>👥 Active Users: <strong>${data.active_users}</strong></p>
+            <h4>🏷️ Domain Breakdown:</h4>
+            <ul>
+              ${Object.entries(data.domain_breakdown)
+                            .map(([domain, count]) => `<li>${domain}: ${count} jobs</li>`)
+                            .join('')}
+            </ul>
+          `;
+                } else {
+                    document.getElementById("modal-body").innerText = "❌ Error fetching summary.";
+                }
+            } catch (e) {
+                document.getElementById("modal-body").innerText = "❌ Server error.";
+            }
+        }
+
+        function downloadZip() {
+            if (currentDate) {
+                window.location.href = `/admin/download/${currentDate}`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("summary-modal").style.display = "none";
+        }
+    </script>
 </body>
 
 </html>
