@@ -40,6 +40,7 @@ export function showEnhancedSideModal(jobData, isManual = false) {
     <div class="feedback-icon success">✅</div>
     <div class="feedback-icon error">❌</div>
     <div class="feedback-icon duplicate">⚠️</div>
+    <div class="feedback-icon limit">⛔</div>
     <p class="feedback-message"></p>
     </div>
     `;
@@ -123,11 +124,11 @@ async function submitJobData(modal) {
 
         const result = await res.json();
         if (result.status === 'duplicate') {
-            toggleModalFeedback('duplicate', 'Logged this bad boy already. On to the next.');
+            toggleModalFeedback('duplicate', 'Smart move — but we already got this one.');
             return;
         }
         if (result.status === 'limit_reached') {
-            toggleModalFeedback('error', result.message || 'You reached your daily logging limit.');
+            toggleModalFeedback('error', result.message || 'That’s all for today, legend. Let’s continue the grind tomorrow.');
             return;
         }
 
@@ -273,6 +274,7 @@ function toggleModalFeedback(status = 'loading', message = '') {
     const successIcon = overlay.querySelector('.feedback-icon.success');
     const errorIcon = overlay.querySelector('.feedback-icon.error');
     const duplicateIcon = overlay.querySelector('.feedback-icon.duplicate'); // NEW
+    const limitIcon = overlay.querySelector('.feedback-icon.limit');
     const text = overlay.querySelector('.feedback-message');
 
     // Reset visibility
