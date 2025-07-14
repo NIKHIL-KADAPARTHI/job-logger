@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Multi-User Job Logger",
   "version": "2.1.0",
-  "description": "Advanced job logging with debug extractors for precise development",
+  "description": "Advanced job logging tool with multi-user support, daily limits.",
   "permissions": [
     "scripting",
     "activeTab",
@@ -13,7 +13,7 @@
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "Job Logger - Debug"
+    "default_title": "Job Logger"
   },
   "content_scripts": [
     {
