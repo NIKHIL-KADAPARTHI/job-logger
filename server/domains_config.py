@@ -22,8 +22,14 @@ DOMAINS = [
     },
     {
         "id": "data_science",
-        "display_name": "Data Science & Analytics",
-        "keywords": ["data", "analytics", "scientist", "machine learning", "ai", "python", "sql"],
+        "display_name": "Data Science",
+        "keywords": ["data scientist", "machine learning", "ai", "deep learning", "python", "modeling"],
+        "active": True
+    },
+    {
+        "id": "data_analytics",
+        "display_name": "Data Analytics",
+        "keywords": ["data analyst", "analytics", "sql", "excel", "reporting", "power bi", "tableau"],
         "active": True
     },
     {
@@ -88,6 +94,12 @@ DOMAINS = [
     },
     
     # NON-TECHNICAL DOMAINS
+    {
+        "id": "engineering_manager",
+        "display_name": "Engineering Manager",
+        "keywords": ["engineering manager", "tech lead", "engineering leadership", "head of engineering", "director of engineering"],
+        "active": True
+    },
     {
         "id": "product_management",
         "display_name": "Product Management",
